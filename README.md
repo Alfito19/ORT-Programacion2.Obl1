@@ -1,5 +1,5 @@
 # ORT-Programacion2
-Obligatorio - Programacion 2
+Obligatorio - Programacion 2 
 Universidad ORT Uruguay - Licenciatura en sistemas
  
 Juego de solitario, que se juega en un tablero rectangular de máximo 9*9. El tablero contiene
