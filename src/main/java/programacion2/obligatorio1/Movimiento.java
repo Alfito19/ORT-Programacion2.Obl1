@@ -4,32 +4,32 @@ package programacion2.obligatorio1;
 //Alfonso Saizar (305968)
 
 public class Movimiento {
-    private int x;
-    private int y;
+    private int cols;
+    private int filas;
 
     public Movimiento(int col,int fila){
-        this.setY(fila);//filas o i
-        this.setX(col);//columnas o j
+        this.setFilas(fila);//filas o i
+        this.setCols(col);//columnas o j
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void setCols(int col) {
+        this.cols = col;
     }
     
-    public int getX(){
-        return this.x;
+    public int getCols(){
+        return this.cols;
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public void setFilas(int fila) {
+        this.filas = fila;
     }
 
-    public int getY(){
-        return this.y;
+    public int getFilas(){
+        return this.filas;
     }
     
     @Override
     public String toString(){
-        return "(" + (this.getY()+1) + "," + (this.getX()+1) + ")";
+        return "(" + (this.getFilas()+1) + "," + (this.getCols()+1) + ")";
     }
 }

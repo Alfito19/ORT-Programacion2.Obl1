@@ -8,12 +8,13 @@ import java.util.*;
 public class tableroCartas {
     //argumentos de objeto, no hay instancia de clase 
     private Carta[][] tablero;
-    private ArrayList<Movimiento> soluciones = new ArrayList<>();
+    private ArrayList<Movimiento> soluciones;
     private int nivel;
 
     public tableroCartas(){
         this.tablero = new Carta[5][6];
         setNivel(3);
+        this.soluciones = new ArrayList<>();
     }
 
     public void setNivel(int aLevel){
@@ -113,7 +114,9 @@ public class tableroCartas {
     //luego de esto se tiene que mostrar el tablero
     public void retroceder(){
         this.aplicarMov();
-        this.soluciones.remove(soluciones.size()-1);
+        if(soluciones.size() > 1){
+            this.soluciones.remove(soluciones.size()-1);
+        }
     }
 
     public void agregarMov(int unaColumna,int unaFila){
@@ -135,13 +138,13 @@ public class tableroCartas {
     //llama directamente al ultimo elemento de la lista de soluciones para no tener que pasarle por parametro al mismo
     public void aplicarMov(){
         Movimiento mov = this.soluciones.get(this.soluciones.size()-1);
-        Carta c = this.tablero[mov.getY()][mov.getX()];
+        Carta c = this.tablero[mov.getFilas()][mov.getCols()];
         switch(c.getTipo()){
             case "|":
-                this.cambioColumna(mov.getX());
+                this.cambioColumna(mov.getCols());
                 break;
             case "-":
-                this.cambioFila(mov.getY());
+                this.cambioFila(mov.getFilas());
                 break;
             case "/":
                 this.diagDer(mov);
@@ -152,67 +155,68 @@ public class tableroCartas {
     }
 
     public boolean checkWin(){
-        boolean cond = true;
-        for(int i=0;i<this.getTablero().length && cond;i++){
-            for(int j=1;j<this.getTablero()[0].length && cond;j++){
-                cond = this.getTablero()[i][j].compara(this.getTablero()[i][j-1]);
+        boolean condicion = true;
+        for(int i=0;i<this.getTablero().length && condicion;i++){
+            for(int j=1;j<this.getTablero()[0].length && condicion;j++){
+                if(j == 1 && i > 0 && condicion){
+                    condicion = this.getTablero()[i-1][j].compara(this.getTablero()[i][j]);
+                }
+                else if(condicion){
+                    condicion = this.getTablero()[i][j].compara(this.getTablero()[i][j-1]);
+                }
             }
         }
-        return cond;
+        return condicion;
     }
     
     public void cambioFila(int fila){
-        Carta[][] plat = this.getTablero();
-        for(int j = 0; j<plat[fila].length; j++){
-            plat[fila][j].cambiarColor();
+        Carta[][] cambioTablero = this.getTablero();
+        for(int j = 0; j < cambioTablero[fila].length; j++){
+            cambioTablero[fila][j].cambiarColor();
         }
-        this.setTableroSistema(plat);
-        //Esto podria ser this.tablero = plat?
+        this.setTableroSistema(cambioTablero);
     }
 
     public void cambioColumna(int columna){
-        Carta[][] plat = this.getTablero();
-        for(int i = 0; i<plat.length; i++){
-            plat[i][columna].cambiarColor();
+        Carta[][] cambioTablero = this.getTablero();
+        for(int i = 0; i < cambioTablero.length; i++){
+            cambioTablero[i][columna].cambiarColor();
         }
-        this.setTableroSistema(plat);
-        //Esto podria ser this.tablero = plat?
+        this.setTableroSistema(cambioTablero);
     }
 
     //izquierda a derecha (\)
     public void diagIzq(Movimiento m){
-        int cX=0;
-        int cY=0;
-        Carta[][] plat = this.getTablero();
-        if(m.getX()>m.getY()){
-            cX=m.getX()- m.getY();
+        int cX = 0;
+        int cY = 0;
+        Carta[][] cambioTablero = this.getTablero();
+        if(m.getCols() > m.getFilas()){
+            cX = m.getCols() - m.getFilas();
         }
-        else if(m.getY()>m.getX()){
-            cY=m.getY()- m.getX();
+        else if(m.getFilas() > m.getCols()){
+            cY = m.getFilas() - m.getCols();
         }
-        while(cY<plat.length && cX<plat[0].length){
-            plat[cY++][cX++].cambiarColor();
+        while(cY < cambioTablero.length && cX < cambioTablero[0].length){
+            cambioTablero[cY++][cX++].cambiarColor();
         }
-        this.setTableroSistema(plat);
-        //Esto podria ser this.tablero = plat?
+        this.setTableroSistema(cambioTablero);
     }
     
     //derecha a izquierda (/)
     public void diagDer(Movimiento m){
-        int cX=m.getX();
-        int cY=m.getY();
-        Carta[][] plat = this.getTablero();
-        while(cX!=0 && cY!=plat.length-1){
+        int cX=m.getCols();
+        int cY=m.getFilas();
+        Carta[][] cambioTablero = this.getTablero();
+        while(cX != 0 && cY != cambioTablero.length-1){
             cX--;
             cY++;
         }
-        while(cY>=0 && cX<plat[0].length){
-            plat[cY][cX].cambiarColor();
+        while(cY >= 0 && cX < cambioTablero[0].length){
+            cambioTablero[cY][cX].cambiarColor();
             cY--;
             cX++;
         }
-        this.setTableroSistema(plat);
-        //Esto podria ser this.tablero = plat?
+        this.setTableroSistema(cambioTablero);
     }
 
     public void imprimirTablero(){
@@ -223,7 +227,6 @@ public class tableroCartas {
         System.out.println();
         // Imprimir las filas de la matriz
         for (int i = 0; i < this.tablero.length; i++) {
-            // Imprimir la línea superior de la fila
             System.out.print("  +");
             for (int j = 0; j < this.tablero[i].length; j++) {
                 System.out.print("---+");
@@ -238,8 +241,54 @@ public class tableroCartas {
             }
             System.out.println();
         }
-        // Imprimir la línea inferior de la matriz
         System.out.print("  +");
+        for (int j = 0; j < this.tablero[0].length; j++) {
+            System.out.print("---+");
+        }
+    }
+
+    public void imprimir2Tableros(){
+        System.out.print(Carta.NC+" ");
+        for (int j = 0; j < this.tablero[0].length; j++) {
+            System.out.print("   "+(j+1));
+        }
+        System.out.print("            ");
+        for (int j = 0; j < this.tablero[0].length; j++) {
+            System.out.print("   "+(j+1));
+        }
+        System.out.println();
+        // Imprimir las filas de la matriz
+        for (int i = 0; i < this.tablero.length; i++) {
+            System.out.print("  +");
+            for (int j = 0; j < this.tablero[i].length; j++) {
+                System.out.print("---+");
+            }
+            System.out.print("           +");
+            for (int j = 0; j < this.tablero[i].length; j++) {
+                System.out.print("---+");
+            }
+
+            System.out.println();
+            
+            // Imprimir los elementos de la fila
+            System.out.print(i + 1 + " |");
+            aplicarMov();
+            for (int j = 0; j < this.tablero[i].length; j++) {
+                System.out.printf(" %s |", this.getTablero()[i][j]+Carta.NC);
+            }
+            aplicarMov();
+            System.out.print("   ==>   "+(i+1)+" |");
+            for (int j = 0; j < this.tablero[i].length; j++) {
+                System.out.printf(" %s |", this.getTablero()[i][j]+Carta.NC);
+            }
+            
+            System.out.println();
+        }
+        System.out.print("  +");
+        for (int j = 0; j < this.tablero[0].length; j++) {
+            System.out.print("---+");
+        }
+        System.out.print("           +");
         for (int j = 0; j < this.tablero[0].length; j++) {
             System.out.print("---+");
         }
