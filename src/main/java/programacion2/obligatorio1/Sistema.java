@@ -126,6 +126,7 @@ public class Sistema {
                                 if(col == (-1) && fila == (-1)){
                                     tablero.retroceder();
                                     tablero.imprimirTablero();
+                                    System.out.println();
                                     tercerRespuesta = in.nextLine();
                                 }
                                 // En caso de haber empezado el proceso de retroceder y quiera cancelar
@@ -218,7 +219,7 @@ public class Sistema {
                 }
                 finDelJuego(tablero);
             }else if(primerRespuesta.equalsIgnoreCase("N")){
-                break;
+                System.exit(0);
             }
             else{
                 System.out.println("Opcion inválida, responda con Y para jugar o N para cerrar el menú");

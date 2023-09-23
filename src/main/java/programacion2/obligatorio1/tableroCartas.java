@@ -99,6 +99,7 @@ public class tableroCartas {
                 unTableroRandom[i][j] = new Carta(""+elColor,""+tipos[(int)(Math.random() * 4) + 0]);
             }
         }
+        this.tablero = unTableroRandom;
         int k = 1;
         while(k <= unNivel){
             int filaRandom = (int)(Math.random() * filas) + 0;
@@ -106,7 +107,6 @@ public class tableroCartas {
             this.agregarMov(columnaRandom,filaRandom);
             k++;
         }
-        this.tablero = unTableroRandom;
     }
 
     //se ejecuta cada vez que se agrega o elimina un movimiento
