@@ -101,7 +101,7 @@ public class Sistema {
                     try{
                         int fila = Integer.parseInt(tercerRespuesta);
                         // En caso de que ingrese un numero fuera de rango
-                        if(fila > tablero.getTablero()[0].length || fila < -1){
+                        if(fila > tablero.getTablero().length || fila < -1){
                             System.out.println("No existe esa fila, recuerda que hay entre 1 y " + tablero.getTablero().length + " filas");
                             System.out.println("Ingresa nuevamente la fila");
                             System.out.println();
@@ -133,7 +133,6 @@ public class Sistema {
                                     tablero.retroceder();
                                     tablero.imprimirTablero();
                                     System.out.println();
-                                    tercerRespuesta = in.nextLine();
                                     System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila correspondiente al movimiento");
                                     System.out.println();
                                     tercerRespuesta = in.nextLine();
@@ -217,9 +216,8 @@ public class Sistema {
                                         tercerRespuesta = in.nextLine();
                                     }
                                     else{
-                                        System.out.println("- Columna correspondiente al movimiento");
                                         System.out.println();
-                                        cuartaRespuesta = in.nextLine();
+                                        tercerRespuesta = in.nextLine();
                                     }
                                 }
                             }

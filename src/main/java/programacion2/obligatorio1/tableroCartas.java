@@ -62,7 +62,8 @@ public class tableroCartas {
             this.tablero=unTableroArchivo;
         }
         catch(FileNotFoundException e){
-            e.printStackTrace();
+            System.out.println("El archivo no existe, se generará el tablero predeterminado.");
+            setTableroPredeterminado();
         }
     }
 
