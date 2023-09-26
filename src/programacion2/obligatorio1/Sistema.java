@@ -54,26 +54,21 @@ public class Sistema {
                                             }
                                             else{
                                                 System.out.println("Nivel inválido, ingresa nuevamente todos los campos.\nIngresa la fila");
-                                                // filaS = in.nextLine();
                                             }
                                         } catch (NumberFormatException e) {
                                             System.out.println("Nivel inválido, ingresa nuevamente todos los campos.\nIngresa la fila");
-                                            // filaS = in.nextLine();
                                         }
                                     }
                                     else{
                                         System.out.println("Cantidad de columnas inválida, ingresa nuevamente todos los campos.\nIngresa la fila");
-                                        // filaS = in.nextLine();
                                     }
                                     
                                 } catch (NumberFormatException e) {
                                     System.out.println("Cantidad de columnas inválida, ingresa nuevamente todos los campos.\nIngresa la fila");
-                                    // filaS = in.nextLine();
                                 }
                             }
                             else{
                                 System.out.println("Cantidad de filas inválido, ingresa nuevamente todos los campos.\nIngresa la fila");
-                                // filaS = in.nextLine();
                             }
                             
                         } catch (NumberFormatException e) {
@@ -89,11 +84,8 @@ public class Sistema {
                 // Mostramos el tablero base, imprimimos menu con opciones y empezamos a contar el tiempo
                 tablero.imprimirTablero();
                 tiempoInicial = Instant.now();
-                System.out.println();
-                System.out.println();
-                System.out.println("Recuerde que siempre podrá utilizar los sigueintes comandos \n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion");
-                System.out.println("En caso contrario, realice un movimiento ingresando la fila correspondiente al movimiento deseado.");
-                System.out.println();
+                System.out.println("\n\nRecuerde que siempre podrá utilizar los sigueintes comandos \n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion");
+                System.out.println("En caso contrario, realice un movimiento ingresando la fila correspondiente al movimiento deseado.\n");
                 String tercerRespuesta = in.nextLine();
                 boolean ListoParaJugar = true;
                 while(ListoParaJugar){
@@ -103,15 +95,13 @@ public class Sistema {
                         // En caso de que ingrese un numero fuera de rango
                         if(fila > tablero.getTablero().length || fila < -1){
                             System.out.println("No existe esa fila, recuerda que hay entre 1 y " + tablero.getTablero().length + " filas");
-                            System.out.println("Ingresa nuevamente la fila");
-                            System.out.println();
+                            System.out.println("Ingresa nuevamente la fila\n");
                             tercerRespuesta = in.nextLine();
                         }
                         // En caso de que por casualidad ingrese -1 en el primer movimiento, le diremos que debe aplicar algun movimiento antes de retroceder.
                         else if(tablero.getSoluciones().size() <= tablero.getNivel() && fila == (-1)){
                             System.out.println("Debe realizar un movimiento antes de poder retroceder");
-                            System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila correspondiente al movimiento");
-                            System.out.println();
+                            System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila correspondiente al movimiento\n");
                             tercerRespuesta = in.nextLine();
                         }
                         else{
@@ -132,29 +122,24 @@ public class Sistema {
                                 if(col == (-1) && fila == (-1)){
                                     tablero.retroceder();
                                     tablero.imprimirTablero();
-                                    System.out.println();
-                                    System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila correspondiente al movimiento");
-                                    System.out.println();
+                                    System.out.println("\nIngrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila correspondiente al movimiento\n");
                                     tercerRespuesta = in.nextLine();
                                 }
                                 // En caso de haber empezado el proceso de retroceder y quiera cancelar
                                 else if(fila == -1 && col != -1){
                                     System.out.println("Retroceso cancelado");
-                                    System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila correspondiente al movimiento");
-                                    System.out.println();
+                                    System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila correspondiente al movimiento\n");
                                     tercerRespuesta = in.nextLine();
                                 }
                                 // En caso de que ingrese -1 en col pero no en fila
                                 else if(col == -1 && fila != -1){
-                                    System.out.println("El proceso de retroceso debe iniciarse con la fila, intentelo de nuevo");
-                                    System.out.println();
+                                    System.out.println("El proceso de retroceso debe iniciarse con la fila, intentelo de nuevo\n");
                                     tercerRespuesta = in.nextLine();
                                 }
                                 // En caso de que ingrese un numero fuera de rango
                                 else if(col > tablero.getTablero()[0].length || col < -1){
                                     System.out.println("No existe esa columna, recuerda que hay entre 1 y " + tablero.getTablero()[0].length + " columnas");
-                                    System.out.println("Ingresa nuevamente la columna");
-                                    System.out.println();
+                                    System.out.println("Ingresa nuevamente la columna\n");
                                     cuartaRespuesta = in.nextLine();
                                 }
                                 // En caso de que el movimiento a ingresar sea igual al ultimo movimiento ingresado
@@ -169,8 +154,7 @@ public class Sistema {
                                         ListoParaJugar = false;
                                     }
                                     else{
-                                        System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila correspondiente al movimiento");
-                                        System.out.println();
+                                        System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila correspondiente al movimiento\n");
                                         tercerRespuesta = in.nextLine();
                                     }
                                 }
@@ -178,8 +162,7 @@ public class Sistema {
                                 else{
                                     tablero.agregarMov(col-1, fila-1);
                                     tablero.imprimir2Tableros();// Imprimir tablero con movimiento (dos tableros)
-                                    System.out.println();
-                                    System.out.println();
+                                    System.out.println("\n");
                                     if(tablero.checkWin()){
                                         System.out.println("¡GANASTE!");
                                         deseaJugar = false;
@@ -187,8 +170,7 @@ public class Sistema {
                                         ListoParaJugar = false;
                                     }
                                     else{
-                                        System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila correspondiente al movimiento");
-                                        System.out.println();
+                                        System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila correspondiente al movimiento\n");
                                         tercerRespuesta = in.nextLine();
                                     }
                                 }
@@ -197,22 +179,19 @@ public class Sistema {
                             catch(NumberFormatException e){
                                 if(cuartaRespuesta.toUpperCase().equals("H")){
                                     tablero.mostrarHistorial();
-                                    System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila correspondiente al movimiento");
-                                    System.out.println();
+                                    System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila correspondiente al movimiento\n");
                                     tercerRespuesta = in.nextLine();
                                 }else if(cuartaRespuesta.toUpperCase().equals("S")){
                                     tablero.mostrarSoluciones();
-                                    System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila correspondiente al movimiento");
-                                    System.out.println();
+                                    System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila correspondiente al movimiento\n");
                                     tercerRespuesta = in.nextLine();
                                 }else if(cuartaRespuesta.toUpperCase().equals("X")){
-                                    finDelJuego(tablero, tiempoInicial);
+                                    finDelJuego(tablero, tiempoInicial,cuartaRespuesta);
                                     System.exit(0);
                                 }else{
                                     System.out.println("Entrada no válida, recuerda que las opciones son: \n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila correspondiente al movimiento");
                                     if(fila == -1){
-                                        System.out.println("- Fila correspondiente al movimiento");
-                                        System.out.println();
+                                        System.out.println("- Fila correspondiente al movimiento\n");
                                         tercerRespuesta = in.nextLine();
                                     }
                                     else{
@@ -227,26 +206,23 @@ public class Sistema {
                     catch(NumberFormatException e){
                         if(tercerRespuesta.toUpperCase().equals("H")){
                             tablero.mostrarHistorial();
-                            System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila correspondiente al movimiento");
-                            System.out.println();
+                            System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila correspondiente al movimiento\n");
                             tercerRespuesta = in.nextLine();
                         }else if(tercerRespuesta.toUpperCase().equals("S")){
                             tablero.mostrarSoluciones();
-                            System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila correspondiente al movimiento");
-                            System.out.println();
+                            System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila correspondiente al movimiento\n");
                             tercerRespuesta = in.nextLine();
                         }
                         else if(tercerRespuesta.toUpperCase().equals("X")){
-                                finDelJuego(tablero, tiempoInicial);
+                                finDelJuego(tablero, tiempoInicial,tercerRespuesta);
                                 System.exit(0);
                         }else{
-                            System.out.println("Entrada no válida, recuerda que las opciones son: \n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila correspondiente al movimiento");
-                            System.out.println();
+                            System.out.println("Entrada no válida, recuerda que las opciones son: \n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila correspondiente al movimiento\n");
                             tercerRespuesta = in.nextLine();
                         }
                     }
                 }
-                finDelJuego(tablero,tiempoInicial);
+                finDelJuego(tablero,tiempoInicial,tercerRespuesta);
                 if(tercerRespuesta.equals("X")){
                     System.exit(0);
                 }
@@ -263,7 +239,7 @@ public class Sistema {
         in.close();
     }
     
-    public static void finDelJuego(tableroCartas tablero,Instant tiempoInicial){
+    public static void finDelJuego(tableroCartas tablero,Instant tiempoInicial,String respuesta){
         System.out.println("Fin del juego.");
         Duration duracion = Duration.between(tiempoInicial, Instant.now());
         // Obtiene los minutos y segundos de la duración
@@ -271,6 +247,8 @@ public class Sistema {
         long segundos = duracion.minusMinutes(minutos).getSeconds();
         // Imprime el resultado en formato Minutos:Segundos
         System.out.println("Tiempo transcurrido: " + minutos + " minutos y " + segundos + " segundos");
-        System.out.println("¿Desea volver a jugar? Y para si, N para no");
+        if (!respuesta.equalsIgnoreCase("X")){
+            System.out.println("¿Desea volver a jugar? Y para si, N para no");
+        } 
     }
 }
