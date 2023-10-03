@@ -124,6 +124,7 @@ public class Sistema {
                                     tablero.imprimirTablero();
                                     System.out.println("\nIngrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila correspondiente al movimiento\n");
                                     tercerRespuesta = in.nextLine();
+                                    tablero.agregarHistorialEspecial(-1,-1);
                                 }
                                 // En caso de haber empezado el proceso de retroceder y quiera cancelar
                                 else if(fila == -1 && col != -1){
@@ -145,6 +146,7 @@ public class Sistema {
                                 // En caso de que el movimiento a ingresar sea igual al ultimo movimiento ingresado
                                 else if(tablero.getSoluciones().get(tablero.getSoluciones().size()-1).getFilas()+1 == fila && tablero.getSoluciones().get(tablero.getSoluciones().size()-1).getCols()+1 == col){
                                     tablero.retroceder();
+                                    tablero.agregarHistorialEspecial(col,fila);
                                     tablero.imprimir2Tableros(); // Imprimir tablero con movimiento (dos tableros)
                                     System.out.println();
                                     if(tablero.checkWin()){

@@ -130,6 +130,10 @@ public class tableroCartas {
         }
     }
 
+    public void agregarHistorialEspecial(int unaCol,int unafila){
+        this.historial.add(new Movimiento(unaCol,unaFila));
+    }
+
     //se ejecuta cada vez que se agrega o elimina un movimiento
     //luego de esto se tiene que mostrar el tablero
     public void retroceder(){
