@@ -9,17 +9,34 @@ public class tableroCartas {
     //argumentos de objeto, no hay instancia de clase 
     private Carta[][] tablero;
     private ArrayList<Movimiento> soluciones;
+    private ArrayList<Movimiento> historial;
     private int nivel;
+    private int movs;
 
     public tableroCartas(){
         this.tablero = new Carta[5][6];
         setNivel(3);
         this.soluciones = new ArrayList<>();
+        this.historial = new ArrayList<>();
+        this.movs = 0;
+    }
+
+    public void aumentarMovs(){
+        this.movs++;
+    }
+
+    public int getMovs(){
+        return this.movs;
+    }
+
+    public ArrayList<Movimiento> getHistorial(){
+        return this.historial;
     }
 
     public void setNivel(int aLevel){
         this.nivel=aLevel;
     }
+    
     public int getNivel(){
         return this.nivel;
     }
@@ -86,6 +103,7 @@ public class tableroCartas {
             }
         }
         this.tablero = unTableroPredeterminado;
+        this.movs = 3;
         this.soluciones.add(new Movimiento(3,3));
         this.soluciones.add(new Movimiento(5,4));
         this.soluciones.add(new Movimiento(3,4));
@@ -103,6 +121,7 @@ public class tableroCartas {
         }
         this.tablero = unTableroRandom;
         int k = 1;
+        this.setNivel(unNivel);
         while(k <= unNivel){
             int filaRandom = (int)(Math.random() * filas) + 0;
             int columnaRandom = (int)(Math.random() * cols) + 0;
@@ -122,12 +141,15 @@ public class tableroCartas {
 
     public void agregarMov(int unaColumna,int unaFila){
         this.soluciones.add(new Movimiento(unaColumna,unaFila));
+        if(this.getMovs()>=this.getNivel()){
+            this.historial.add(new Movimiento(unaColumna,unaFila));
+        }
         aplicarMov();
     }
 
     public void mostrarHistorial(){
-        for(int i=this.getNivel(); i < this.getSoluciones().size(); i++){
-            System.out.println(this.getSoluciones().get(i));
+        for(int i=0; i < this.getHistorial().size(); i++){
+            System.out.println(this.getHistorial().get(i));
         }
     }
 
@@ -138,6 +160,7 @@ public class tableroCartas {
     }
     //llama directamente al ultimo elemento de la lista de soluciones para no tener que pasarle por parametro al mismo
     public void aplicarMov(){
+        this.aumentarMovs();
         Movimiento mov = this.soluciones.get(this.soluciones.size()-1);
         Carta c = this.tablero[mov.getFilas()][mov.getCols()];
         switch(c.getTipo()){
@@ -159,10 +182,11 @@ public class tableroCartas {
         boolean condicion = true;
         for(int i=0;i<this.getTablero().length && condicion;i++){
             for(int j=1;j<this.getTablero()[0].length && condicion;j++){
-                if(j == 1 && i > 0 && condicion){
-                    condicion = this.getTablero()[i-1][j].compara(this.getTablero()[i][j]);
+                if (i>0 && j==1){
+                    condicion = this.getTablero()[i][j].compara(this.getTablero()[i][j-1])
+                            && this.getTablero()[i][j-1].compara(this.getTablero()[i-1][this.getTablero()[i-1].length-1]);
                 }
-                else if(condicion){
+                else{
                     condicion = this.getTablero()[i][j].compara(this.getTablero()[i][j-1]);
                 }
             }

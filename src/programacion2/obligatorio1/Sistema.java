@@ -93,7 +93,7 @@ public class Sistema {
                     try{
                         int fila = Integer.parseInt(tercerRespuesta);
                         // En caso de que ingrese un numero fuera de rango
-                        if(fila > tablero.getTablero().length || fila < -1){
+                        if(fila > tablero.getTablero().length || fila < -1 || fila == 0){
                             System.out.println("No existe esa fila, recuerda que hay entre 1 y " + tablero.getTablero().length + " filas");
                             System.out.println("Ingresa nuevamente la fila\n");
                             tercerRespuesta = in.nextLine();
@@ -137,7 +137,7 @@ public class Sistema {
                                     tercerRespuesta = in.nextLine();
                                 }
                                 // En caso de que ingrese un numero fuera de rango
-                                else if(col > tablero.getTablero()[0].length || col < -1){
+                                else if(col > tablero.getTablero()[0].length || col < -1|| col == 0){
                                     System.out.println("No existe esa columna, recuerda que hay entre 1 y " + tablero.getTablero()[0].length + " columnas");
                                     System.out.println("Ingresa nuevamente la columna\n");
                                     cuartaRespuesta = in.nextLine();
