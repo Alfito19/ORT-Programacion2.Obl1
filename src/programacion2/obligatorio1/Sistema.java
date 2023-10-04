@@ -99,7 +99,7 @@ public class Sistema {
                             tercerRespuesta = in.nextLine();
                         }
                         // En caso de que por casualidad ingrese -1 en el primer movimiento, le diremos que debe aplicar algun movimiento antes de retroceder.
-                        else if(tablero.getSoluciones().size() <= tablero.getNivel() && fila == (-1)){
+                        else if(tablero.getHistorial().size() <= 0 && fila == (-1)){
                             System.out.println("Debe realizar un movimiento antes de poder retroceder");
                             System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila correspondiente al movimiento\n");
                             tercerRespuesta = in.nextLine();
@@ -120,7 +120,7 @@ public class Sistema {
                                 int col =Integer.parseInt(cuartaRespuesta);
                                 // En caso de que quiera retroceder
                                 if(col == (-1) && fila == (-1)){
-                                    tablero.retroceder();
+                                    tablero.retroceder(-1,-1);
                                     tablero.imprimirTablero();
                                     System.out.println("\nIngrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila correspondiente al movimiento\n");
                                     tercerRespuesta = in.nextLine();
@@ -143,8 +143,9 @@ public class Sistema {
                                     cuartaRespuesta = in.nextLine();
                                 }
                                 // En caso de que el movimiento a ingresar sea igual al ultimo movimiento ingresado
-                                else if(tablero.getSoluciones().get(tablero.getSoluciones().size()-1).getFilas()+1 == fila && tablero.getSoluciones().get(tablero.getSoluciones().size()-1).getCols()+1 == col){
-                                    tablero.retroceder();
+//                                else if(tablero.getSoluciones().get(tablero.getSoluciones().size()-1).getFilas()+1 == fila && tablero.getSoluciones().get(tablero.getSoluciones().size()-1).getCols()+1 == col){
+                                else if(!tablero.getHistorial().isEmpty() && tablero.getHistorial().get(tablero.getHistorial().size()-1).getFilas()+1 == fila && tablero.getHistorial().get(tablero.getHistorial().size()-1).getCols()+1 == col){
+                                    tablero.retroceder(col,fila);
                                     tablero.imprimir2Tableros(); // Imprimir tablero con movimiento (dos tableros)
                                     System.out.println();
                                     if(tablero.checkWin()){

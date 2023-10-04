@@ -132,19 +132,43 @@ public class tableroCartas {
 
     //se ejecuta cada vez que se agrega o elimina un movimiento
     //luego de esto se tiene que mostrar el tablero
-    public void retroceder(){
-        this.aplicarMov();
-        if(soluciones.size() > 1){
-            this.soluciones.remove(soluciones.size()-1);
+    public void retroceder(int columna, int fila){
+        boolean sePuede = false;
+        if(soluciones.size() > 1 && columna == (historial.get(historial.size()-1).getCols())+1 && fila == (historial.get(historial.size()-1).getFilas())+1) {
+            sePuede = true;
+        }
+        else if(columna == -1 && fila == -1){
+            sePuede = true;
+        }
+        if(sePuede){
+            if(columna == (soluciones.get(soluciones.size()-1).getCols()) && fila == (soluciones.get(soluciones.size()-1).getFilas())){
+                columna = soluciones.get(soluciones.size()-1).getCols();
+                fila = soluciones.get(soluciones.size()-1).getFilas();
+            }
+            else{
+                columna = historial.get(historial.size()-1).getCols();
+                fila = historial.get(historial.size()-1).getFilas();
+            }
+            agregarMov(columna,fila);
         }
     }
 
     public void agregarMov(int unaColumna,int unaFila){
-        this.soluciones.add(new Movimiento(unaColumna,unaFila));
+        if(getSoluciones().size() > 1 && unaColumna == (soluciones.get(soluciones.size()-1).getCols()) && unaFila == (soluciones.get(soluciones.size()-1).getFilas())){
+            aplicarMov();
+            this.soluciones.remove(soluciones.size()-1);
+        }
+        else if(getSoluciones().isEmpty()||!(unaColumna == (soluciones.get(soluciones.size() - 1).getCols()) && unaFila == (soluciones.get(soluciones.size() - 1).getFilas()))){
+            this.soluciones.add(new Movimiento(unaColumna,unaFila));
+            aplicarMov();
+        }
+        else{
+            aplicarMov();
+        }
         if(this.getMovs()>=this.getNivel()){
             this.historial.add(new Movimiento(unaColumna,unaFila));
         }
-        aplicarMov();
+        
     }
 
     public void mostrarHistorial(){
@@ -297,7 +321,6 @@ public class tableroCartas {
             
             // Imprimir los elementos de la fila
             System.out.print(i + 1 + " |");
-            aplicarMov();
             for (int j = 0; j < this.tablero[i].length; j++) {
                 System.out.printf(" %s |", this.getTablero()[i][j]+Carta.NC);
             }
@@ -306,6 +329,7 @@ public class tableroCartas {
             for (int j = 0; j < this.tablero[i].length; j++) {
                 System.out.printf(" %s |", this.getTablero()[i][j]+Carta.NC);
             }
+            aplicarMov();
             
             System.out.println();
         }
