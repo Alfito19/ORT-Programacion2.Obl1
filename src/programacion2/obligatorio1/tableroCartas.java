@@ -4,12 +4,15 @@ package programacion2.obligatorio1;
 //Alfonso Saizar (305968)
 
 import java.io.*;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
 public class tableroCartas {
     //argumentos de objeto, no hay instancia de clase 
     private Carta[][] tablero;
     private ArrayList<Movimiento> soluciones;
     private ArrayList<Movimiento> historial;
+    private Instant tiempoInicial;
     private int nivel;
     private int movs;
 
@@ -20,7 +23,15 @@ public class tableroCartas {
         this.historial = new ArrayList<>();
         this.movs = 0;
     }
-
+    
+    public void setTiempoInicial(){
+        this.tiempoInicial = Instant.now();
+    }
+    
+    public Instant getTiempoInicial(){
+        return this.tiempoInicial;
+    }
+    
     public void aumentarMovs(){
         this.movs++;
     }
@@ -130,7 +141,7 @@ public class tableroCartas {
         }
     }
 
-    public void agregarHistorialEspecial(int unaCol,int unafila){
+    public void agregarHistorialEspecial(int unaCol,int unaFila){
         this.historial.add(new Movimiento(unaCol,unaFila));
     }
 
@@ -174,18 +185,6 @@ public class tableroCartas {
         }
         
     }
-
-    public void mostrarHistorial(){
-        for(int i=0; i < this.getHistorial().size(); i++){
-            System.out.println(this.getHistorial().get(i));
-        }
-    }
-
-    public void mostrarSoluciones(){
-        for(int i = 0; i < this.getSoluciones().size(); i++){
-            System.out.println(this.getSoluciones().get(i));
-        }
-    }
     //llama directamente al ultimo elemento de la lista de soluciones para no tener que pasarle por parametro al mismo
     public void aplicarMov(){
         this.aumentarMovs();
@@ -204,6 +203,12 @@ public class tableroCartas {
             default:
                 this.diagIzq(mov);
         }
+    }
+    //cuando haga call con alfonso se junta todo 
+    public boolean movimientoValido(int unaCol,int unaFila){
+        boolean c1 = this.getTablero().length < unaFila;
+        boolean c2 = this.getTablero()[0].length < unaCol;
+        return c1 || c2 || (unaFila == 0) || (unaCol==0);
     }
 
     public boolean checkWin(){
@@ -272,6 +277,7 @@ public class tableroCartas {
         this.setTableroSistema(cambioTablero);
     }
 
+    //esto tiene que estar en la interfaz
     public void imprimirTablero(){
         System.out.print(Carta.NC+" ");
         for (int j = 0; j < this.tablero[0].length; j++) {
@@ -346,4 +352,18 @@ public class tableroCartas {
             System.out.print("---+");
         }
     }
+    
+        public String finDelJuego(String respuesta){
+            String vuelta="Fin del juego " + "\n";
+            Duration duracion = Duration.between(this.getTiempoInicial(), Instant.now());
+            // Obtiene los minutos y segundos de la duración
+            long minutos = duracion.toMinutes();
+            long segundos = duracion.minusMinutes(minutos).getSeconds();
+            // Imprime el resultado en formato Minutos:Segundos
+            vuelta.concat("Tiempo transcurrido: " + minutos + " minutos y " + segundos + " segundos" + "\n");
+            if (!respuesta.equalsIgnoreCase("X")){
+                vuelta.concat("¿Desea volver a jugar? Y para si, N para no");
+            } 
+            return vuelta;
+        }
 }
