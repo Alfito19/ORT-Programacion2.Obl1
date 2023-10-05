@@ -141,49 +141,48 @@ public class tableroCartas {
         }
     }
 
-    public void agregarHistorialEspecial(int unaCol,int unaFila){
-        this.historial.add(new Movimiento(unaCol,unaFila));
-    }
-
-    //se ejecuta cada vez que se agrega o elimina un movimiento
-    //luego de esto se tiene que mostrar el tablero
-    public void retroceder(int columna, int fila){
-        boolean sePuede = false;
-        if(soluciones.size() > 1 && columna == (historial.get(historial.size()-1).getCols())+1 && fila == (historial.get(historial.size()-1).getFilas())+1) {
-            sePuede = true;
+    public void agregarMov(int unaColumna,int unaFila){
+        int columna = unaColumna-1;
+        int fila = unaFila-1;
+        boolean sePuedeRetroceder = false;
+        if(this.soluciones.size() > 1 && columna == (this.historial.get(this.historial.size()-1).getCols())+1 && fila == (this.historial.get(this.historial.size()-1).getFilas())+1) {
+            sePuedeRetroceder = true;
+            this.historial.add(new Movimiento(columna,fila));
         }
         else if(columna == -1 && fila == -1){
-            sePuede = true;
+            sePuedeRetroceder = true;
+            this.historial.add(new Movimiento(-1,-1));
         }
-        if(sePuede){
-            if(columna == (soluciones.get(soluciones.size()-1).getCols()) && fila == (soluciones.get(soluciones.size()-1).getFilas())){
-                columna = soluciones.get(soluciones.size()-1).getCols();
-                fila = soluciones.get(soluciones.size()-1).getFilas();
+        if(sePuedeRetroceder){
+            if(columna == (this.soluciones.get(this.soluciones.size()-1).getCols()) && fila == (this.soluciones.get(this.soluciones.size()-1).getFilas())){
+                columna = this.soluciones.get(this.soluciones.size()-1).getCols();
+                fila = this.soluciones.get(this.soluciones.size()-1).getFilas();
             }
             else{
-                columna = historial.get(historial.size()-1).getCols();
-                fila = historial.get(historial.size()-1).getFilas();
+                columna = this.historial.get(this.historial.size()-1).getCols();
+                fila = this.historial.get(this.historial.size()-1).getFilas();
             }
-            agregarMov(columna,fila);
-        }
-    }
-
-    public void agregarMov(int unaColumna,int unaFila){
-        if(getSoluciones().size() > 1 && unaColumna == (soluciones.get(soluciones.size()-1).getCols()) && unaFila == (soluciones.get(soluciones.size()-1).getFilas())){
-            aplicarMov();
-            this.soluciones.remove(soluciones.size()-1);
-        }
-        else if(getSoluciones().isEmpty()||!(unaColumna == (soluciones.get(soluciones.size() - 1).getCols()) && unaFila == (soluciones.get(soluciones.size() - 1).getFilas()))){
-            this.soluciones.add(new Movimiento(unaColumna,unaFila));
-            aplicarMov();
+            // Si soluciones tiene elementos y el movimiento que intentamos aplicar es igual al ultimo movimiento de soluciones, aplica el movimiento y lo borra de la lista.
+            if(getSoluciones().size() > 1 && columna == (this.soluciones.get(this.soluciones.size()-1).getCols()) && fila == (this.oluciones.get(this.soluciones.size()-1).getFilas())){
+                aplicarMov();
+                this.soluciones.remove(this.soluciones.size()-1);
+            }
+            // Si soluciones no tiene elementos o movimiento que intentamos aplicar no es igual al ultimo elemento de soluciones, lo agrega a solucion y aplica el movimiento
+            else if(getSoluciones().isEmpty()||!(columna == (this.soluciones.get(this.soluciones.size() - 1).getCols()) && fila == (soluciones.get(soluciones.size() - 1).getFilas()))){
+                this.soluciones.add(new Movimiento(columna,fila));
+                aplicarMov();
+            }
         }
         else{
-            aplicarMov();
-        }
-        if(this.getMovs()>=this.getNivel()){
-            this.historial.add(new Movimiento(unaColumna,unaFila));
-        }
-        
+            //Si el movimiento no está repetido con el ultimo de soluciones, se agrega a soluciones, y en caso de ser un movimiento del usuario, se agrega a historial
+            if(getSoluciones().isEmpty()||!(columna == (this.soluciones.get(this.soluciones.size() - 1).getCols()) && fila == (soluciones.get(soluciones.size() - 1).getFilas()))){
+                this.soluciones.add(new Movimiento(columna,fila));
+                if(this.getMovs()>=this.getNivel()){
+                    this.historial.add(new Movimiento(columna,fila));
+                }
+                aplicarMov();
+            }
+        }        
     }
     //llama directamente al ultimo elemento de la lista de soluciones para no tener que pasarle por parametro al mismo
     public void aplicarMov(){
@@ -204,11 +203,16 @@ public class tableroCartas {
                 this.diagIzq(mov);
         }
     }
-    //cuando haga call con alfonso se junta todo 
+
     public boolean movimientoValido(int unaCol,int unaFila){
-        boolean c1 = this.getTablero().length < unaFila;
-        boolean c2 = this.getTablero()[0].length < unaCol;
-        return c1 || c2 || (unaFila == 0) || (unaCol==0);
+        boolean c1 = (this.getTablero().length > unaFila  && unaFila >= -1 && unaFila != 0);
+        boolean c2 = (this.getTablero()[0].length > unaCol && unaCol >= -1 && unaCol != 0);
+        if (unaCol == (-1) && unaFila == (-1) && this.historial.isEmpty()){
+            return false;
+        }
+        else{
+            return c1 && c2;
+        }
     }
 
     public boolean checkWin(){
@@ -276,94 +280,38 @@ public class tableroCartas {
         }
         this.setTableroSistema(cambioTablero);
     }
-
-    //esto tiene que estar en la interfaz
-    public void imprimirTablero(){
-        System.out.print(Carta.NC+" ");
-        for (int j = 0; j < this.tablero[0].length; j++) {
-            System.out.print("   "+(j+1));
-        }
-        System.out.println();
-        // Imprimir las filas de la matriz
-        for (int i = 0; i < this.tablero.length; i++) {
-            System.out.print("  +");
-            for (int j = 0; j < this.tablero[i].length; j++) {
-                System.out.print("---+");
-            }
-
-            System.out.println();
-            
-            // Imprimir los elementos de la fila
-            System.out.print(i + 1 + " |");
-            for (int j = 0; j < this.tablero[i].length; j++) {
-                System.out.printf(" %s |", this.getTablero()[i][j]+Carta.NC);
-            }
-            System.out.println();
-        }
-        System.out.print("  +");
-        for (int j = 0; j < this.tablero[0].length; j++) {
-            System.out.print("---+");
-        }
-    }
-
-    public void imprimir2Tableros(){
-        System.out.print(Carta.NC+" ");
-        for (int j = 0; j < this.tablero[0].length; j++) {
-            System.out.print("   "+(j+1));
-        }
-        System.out.print("            ");
-        for (int j = 0; j < this.tablero[0].length; j++) {
-            System.out.print("   "+(j+1));
-        }
-        System.out.println();
-        // Imprimir las filas de la matriz
-        for (int i = 0; i < this.tablero.length; i++) {
-            System.out.print("  +");
-            for (int j = 0; j < this.tablero[i].length; j++) {
-                System.out.print("---+");
-            }
-            System.out.print("           +");
-            for (int j = 0; j < this.tablero[i].length; j++) {
-                System.out.print("---+");
-            }
-
-            System.out.println();
-            
-            // Imprimir los elementos de la fila
-            System.out.print(i + 1 + " |");
-            for (int j = 0; j < this.tablero[i].length; j++) {
-                System.out.printf(" %s |", this.getTablero()[i][j]+Carta.NC);
-            }
-            aplicarMov();
-            System.out.print("   ==>   "+(i+1)+" |");
-            for (int j = 0; j < this.tablero[i].length; j++) {
-                System.out.printf(" %s |", this.getTablero()[i][j]+Carta.NC);
-            }
-            aplicarMov();
-            
-            System.out.println();
-        }
-        System.out.print("  +");
-        for (int j = 0; j < this.tablero[0].length; j++) {
-            System.out.print("---+");
-        }
-        System.out.print("           +");
-        for (int j = 0; j < this.tablero[0].length; j++) {
-            System.out.print("---+");
-        }
-    }
     
-        public String finDelJuego(String respuesta){
-            String vuelta="Fin del juego " + "\n";
-            Duration duracion = Duration.between(this.getTiempoInicial(), Instant.now());
-            // Obtiene los minutos y segundos de la duración
-            long minutos = duracion.toMinutes();
-            long segundos = duracion.minusMinutes(minutos).getSeconds();
-            // Imprime el resultado en formato Minutos:Segundos
-            vuelta.concat("Tiempo transcurrido: " + minutos + " minutos y " + segundos + " segundos" + "\n");
-            if (!respuesta.equalsIgnoreCase("X")){
-                vuelta.concat("¿Desea volver a jugar? Y para si, N para no");
-            } 
-            return vuelta;
+    public String finDelJuego(String respuesta3, String respuesta4){
+        String vuelta="Fin del juego " + "\n";
+        Duration duracion = Duration.between(this.getTiempoInicial(), Instant.now());
+        // Obtiene los minutos y segundos de la duración
+        long minutos = duracion.toMinutes();
+        long segundos = duracion.minusMinutes(minutos).getSeconds();
+        // Imprime el resultado en formato Minutos:Segundos
+        vuelta.concat("Tiempo transcurrido: " + minutos + " minutos y " + segundos + " segundos" + "\n");
+        if (!respuesta3.equalsIgnoreCase("X") && !respuesta4.equalsIgnoreCase("X")){
+            vuelta.concat("¿Desea volver a jugar? Y para si, N para no");
+        } 
+        return vuelta;
+    }
+
+    public Carta[][] tableroAnterior(){
+        Carta[][] tab = this.getTablero();
+        Movimiento mov = this.historial.get(this.historial.size()-1);
+        Carta c = tab[mov.getFilas()][mov.getCols()];
+        switch(c.getTipo()){
+            case "|":
+                tab.cambioColumna(mov.getCols());
+                break;
+            case "-":
+                tab.cambioFila(mov.getFilas());
+                break;
+            case "/":
+                tab.diagDer(mov);
+                break;
+            default:
+                tab.diagIzq(mov);
         }
+        return tab;
+    }
 }
