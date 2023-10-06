@@ -311,23 +311,22 @@ public class tableroCartas {
     public Carta[][] tableroAnterior(){
         tableroCartas tab = new tableroCartas();
         tab.setTableroSistema(this.getTablero());
-        tab.soluciones = this.getSoluciones();
-        tab.historial = this.getHistorial();
-        tab.setNivel(this.getNivel());
-        Movimiento mov = this.historial.get(this.historial.size()-1);
-        Carta c = tab.tablero[mov.getFilas()][mov.getCols()];
-        switch(c.getTipo()){
-            case "|":
-                tab.cambioColumna(mov.getCols());
-                break;
-            case "-":
-                tab.cambioFila(mov.getFilas());
-                break;
-            case "/":
-                tab.diagDer(mov);
-                break;
-            default:
-                tab.diagIzq(mov);
+        Movimiento[] mov = {this.historial.get(this.historial.size()-1),this.historial.get(this.historial.size()-2)};
+        for (int i=0;i<=1;i++){
+            Carta c = this.tablero[mov[i].getFilas()][mov[i].getCols()];
+            switch(c.getTipo()){
+                case "|":
+                    tab.cambioColumna(mov[i].getCols());
+                    break;
+                case "-":
+                    tab.cambioFila(mov[i].getFilas());
+                    break;
+                case "/":
+                    tab.diagDer(mov[i]);
+                    break;
+                default:
+                    tab.diagIzq(mov[i]);
+            }
         }
         return tab.getTablero();
     }
