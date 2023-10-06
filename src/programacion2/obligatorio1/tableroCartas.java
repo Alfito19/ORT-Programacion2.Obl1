@@ -220,6 +220,9 @@ public class tableroCartas {
         if (unaCol == (-1) && unaFila == (-1) && this.historial.isEmpty()){
             return false;
         }
+        else if (unaFila == (-1) && unaCol != (-1) || unaFila != (-1) && unaCol == (-1)){
+            return false;
+        }
         else{
             return c1 && c2;
         }
