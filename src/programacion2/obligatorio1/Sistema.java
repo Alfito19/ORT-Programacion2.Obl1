@@ -80,12 +80,25 @@ public class Sistema {
                 }
 
                 // Mostramos el tablero base, imprimimos menu con opciones y empezamos a contar el tiempo
-                tablero.imprimirTablero();
+                imprimirTablero(tablero.getTablero());
                 tablero.setTiempoInicial();
                 System.out.println("\n\nRecuerde que siempre podrá utilizar los sigueintes comandos \n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion");
                 System.out.println("En caso contrario, realice un movimiento ingresando por separado la fila y columna correspondientes al movimiento deseado.\n");
                 // Solicita "tercerRespuesta (fila)" y "cuartaRespuesta (col)" para luego en el try-catch, transformarlo a numero, en caso de que no pueda lo tomará como excepción y verificará si es una de las opciones [X, H, S]. En caso de que se pueda transformar a numero, lo procesará como movimiento chequeando que sea un movimiento válido.
                 String tercerRespuesta = in.nextLine();
+                if(tercerRespuesta.toUpperCase().equals("H")){
+                    mostrarHistorial(tablero);
+                    System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila y columna correspondiente al movimiento\n");
+                    tercerRespuesta = in.nextLine();
+                }else if(tercerRespuesta.toUpperCase().equals("S")){
+                    mostrarSoluciones(tablero);
+                    System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila y columna correspondiente al movimiento\n");
+                    tercerRespuesta = in.nextLine();
+                }
+                else if(tercerRespuesta.toUpperCase().equals("X")){
+                    System.out.println(tablero.finDelJuego(tercerRespuesta, "X"));
+                    System.exit(0);
+                }
                 System.out.println("Ingrese columna\n");
                 String cuartaRespuesta = in.nextLine();
                 boolean ListoParaJugar = true;
@@ -96,7 +109,7 @@ public class Sistema {
                         int col = Integer.parseInt(cuartaRespuesta);
                         if(tablero.movimientoValido(col,fila)){
                             tablero.agregarMov(col,fila);
-                            tablero.imprimir2Tableros(); // Imprimir tablero con movimiento (dos tableros)
+                            imprimir2Tableros(tablero); // Imprimir tablero con movimiento (dos tableros)
                             System.out.println();
                             if(tablero.checkWin()){
                                 System.out.println("¡GANASTE!");
@@ -176,7 +189,7 @@ public class Sistema {
     }
     
     // Imprimir 1 tablero
-    public void imprimirTablero(Carta[][] tablero){
+    public static void imprimirTablero(Carta[][] tablero){
         System.out.print(Carta.NC+" ");
         for (int j = 0; j < tablero[0].length; j++) {
             System.out.print("   "+(j+1));
@@ -194,7 +207,7 @@ public class Sistema {
             // Imprimir los elementos de la fila
             System.out.print(i + 1 + " |");
             for (int j = 0; j < tablero[i].length; j++) {
-                System.out.printf(" %s |", tablero.getTablero()[i][j]+Carta.NC);
+                System.out.printf(" %s |", tablero[i][j]+Carta.NC);
             }
             System.out.println();
         }
@@ -205,8 +218,9 @@ public class Sistema {
     }
     
     // Imprimir 2 tableros.
-    public void imprimir2Tableros(Carta[][] tablero){
-        Carta[][] tablero2 = tablero.tableroAnterior();
+    public static void imprimir2Tableros(tableroCartas unTablero){
+        Carta[][] tablero2 = unTablero.tableroAnterior();
+        Carta[][] tablero = unTablero.getTablero();
         System.out.print(Carta.NC+" ");
         for (int j = 0; j < tablero[0].length; j++) {
             System.out.print("   "+(j+1));
@@ -232,11 +246,11 @@ public class Sistema {
             // Imprimir los elementos de la fila
             System.out.print(i + 1 + " |");
             for (int j = 0; j < tablero[i].length; j++) {
-                System.out.printf(" %s |", tablero.getTablero()[i][j]+Carta.NC);
+                System.out.printf(" %s |", tablero[i][j]+Carta.NC);
             }
             System.out.print("   ==>   "+(i+1)+" |");
             for (int j = 0; j < tablero2[i].length; j++) {
-                System.out.printf(" %s |", tablero.getTablero()[i][j]+Carta.NC);
+                System.out.printf(" %s |", tablero[i][j]+Carta.NC);
             }
             
             System.out.println();

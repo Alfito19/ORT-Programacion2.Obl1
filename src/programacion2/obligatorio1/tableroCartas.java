@@ -136,7 +136,7 @@ public class tableroCartas {
         while(k <= unNivel){
             int filaRandom = (int)(Math.random() * filas) + 0;
             int columnaRandom = (int)(Math.random() * cols) + 0;
-            this.agregarMov(columnaRandom,filaRandom);
+            this.agregarMov(columnaRandom+1,filaRandom+1);
             k++;
         }
     }
@@ -145,44 +145,54 @@ public class tableroCartas {
         int columna = unaColumna-1;
         int fila = unaFila-1;
         boolean sePuedeRetroceder = false;
-        if(this.soluciones.size() > 1 && columna == (this.historial.get(this.historial.size()-1).getCols())+1 && fila == (this.historial.get(this.historial.size()-1).getFilas())+1) {
-            sePuedeRetroceder = true;
-            this.historial.add(new Movimiento(columna,fila));
-        }
-        else if(columna == -1 && fila == -1){
-            sePuedeRetroceder = true;
-            this.historial.add(new Movimiento(-1,-1));
-        }
-        if(sePuedeRetroceder){
-            if(columna == (this.soluciones.get(this.soluciones.size()-1).getCols()) && fila == (this.soluciones.get(this.soluciones.size()-1).getFilas())){
-                columna = this.soluciones.get(this.soluciones.size()-1).getCols();
-                fila = this.soluciones.get(this.soluciones.size()-1).getFilas();
-            }
-            else{
-                columna = this.historial.get(this.historial.size()-1).getCols();
-                fila = this.historial.get(this.historial.size()-1).getFilas();
-            }
-            // Si soluciones tiene elementos y el movimiento que intentamos aplicar es igual al ultimo movimiento de soluciones, aplica el movimiento y lo borra de la lista.
-            if(getSoluciones().size() > 1 && columna == (this.soluciones.get(this.soluciones.size()-1).getCols()) && fila == (this.oluciones.get(this.soluciones.size()-1).getFilas())){
-                aplicarMov();
-                this.soluciones.remove(this.soluciones.size()-1);
-            }
-            // Si soluciones no tiene elementos o movimiento que intentamos aplicar no es igual al ultimo elemento de soluciones, lo agrega a solucion y aplica el movimiento
-            else if(getSoluciones().isEmpty()||!(columna == (this.soluciones.get(this.soluciones.size() - 1).getCols()) && fila == (soluciones.get(soluciones.size() - 1).getFilas()))){
-                this.soluciones.add(new Movimiento(columna,fila));
-                aplicarMov();
-            }
+        if(this.getMovs() < this.getNivel()){
+            this.soluciones.add(new Movimiento(columna,fila));
+            aplicarMov();
         }
         else{
-            //Si el movimiento no está repetido con el ultimo de soluciones, se agrega a soluciones, y en caso de ser un movimiento del usuario, se agrega a historial
-            if(getSoluciones().isEmpty()||!(columna == (this.soluciones.get(this.soluciones.size() - 1).getCols()) && fila == (soluciones.get(soluciones.size() - 1).getFilas()))){
-                this.soluciones.add(new Movimiento(columna,fila));
-                if(this.getMovs()>=this.getNivel()){
-                    this.historial.add(new Movimiento(columna,fila));
-                }
-                aplicarMov();
+            if(this.soluciones.size() > 1 && !this.getHistorial().isEmpty() && columna == (this.historial.get(this.historial.size()-1).getCols())+1 && fila == (this.historial.get(this.historial.size()-1).getFilas())+1) {
+                sePuedeRetroceder = true;
             }
-        }        
+            else if(columna == (-2) && fila == (-2)){
+                sePuedeRetroceder = true;
+            }
+            if(sePuedeRetroceder){
+                if(columna == (this.soluciones.get(this.soluciones.size()-1).getCols()) && fila == (this.soluciones.get(this.soluciones.size()-1).getFilas())){
+                    columna = this.soluciones.get(this.soluciones.size()-1).getCols();
+                    fila = this.soluciones.get(this.soluciones.size()-1).getFilas();
+                }
+                else{
+                    columna = this.historial.get(this.historial.size()-1).getCols();
+                    fila = this.historial.get(this.historial.size()-1).getFilas();
+                }
+                // Si soluciones tiene elementos y el movimiento que intentamos aplicar es igual al ultimo movimiento de soluciones, aplica el movimiento y lo borra de la lista.
+                if(getSoluciones().size() > 1 && columna == (this.soluciones.get(this.soluciones.size()-1).getCols()) && fila == (this.soluciones.get(this.soluciones.size()-1).getFilas())){
+                    this.historial.add(new Movimiento(columna,fila));
+                    aplicarMov();
+                    this.soluciones.remove(this.soluciones.size()-1);
+                }
+                // Si soluciones no tiene elementos o movimiento que intentamos aplicar no es igual al ultimo elemento de soluciones, lo agrega a solucion y aplica el movimiento
+                else if(getSoluciones().isEmpty()||!(columna == (this.soluciones.get(this.soluciones.size() - 1).getCols()) && fila == (soluciones.get(soluciones.size() - 1).getFilas()))){
+                    this.soluciones.add(new Movimiento(columna,fila));
+                    this.historial.add(new Movimiento(columna,fila));
+                    aplicarMov();
+                }
+            }
+            else{
+                //Si el movimiento no está repetido con el ultimo de soluciones, se agrega a soluciones, y en caso de ser un movimiento del usuario, se agrega a historial
+                if(getSoluciones().isEmpty()||!(columna == (this.soluciones.get(this.soluciones.size() - 1).getCols()) && fila == (soluciones.get(soluciones.size() - 1).getFilas()))){
+                    this.soluciones.add(new Movimiento(columna,fila));
+                    this.historial.add(new Movimiento(columna,fila));
+                    aplicarMov();
+                }
+                else{
+                    this.historial.add(new Movimiento(columna,fila));
+                    aplicarMov();
+                    this.soluciones.remove(this.soluciones.size()-1);
+                }
+            }
+        }     
+        
     }
     //llama directamente al ultimo elemento de la lista de soluciones para no tener que pasarle por parametro al mismo
     public void aplicarMov(){
@@ -205,8 +215,8 @@ public class tableroCartas {
     }
 
     public boolean movimientoValido(int unaCol,int unaFila){
-        boolean c1 = (this.getTablero().length > unaFila  && unaFila >= -1 && unaFila != 0);
-        boolean c2 = (this.getTablero()[0].length > unaCol && unaCol >= -1 && unaCol != 0);
+        boolean c1 = (this.getTablero().length >= unaFila  && unaFila >= -1 && unaFila != 0);
+        boolean c2 = (this.getTablero()[0].length >= unaCol && unaCol >= -1 && unaCol != 0);
         if (unaCol == (-1) && unaFila == (-1) && this.historial.isEmpty()){
             return false;
         }
@@ -296,9 +306,13 @@ public class tableroCartas {
     }
 
     public Carta[][] tableroAnterior(){
-        Carta[][] tab = this.getTablero();
+        tableroCartas tab = new tableroCartas();
+        tab.setTableroSistema(this.getTablero());
+        tab.soluciones = this.getSoluciones();
+        tab.historial = this.getHistorial();
+        tab.setNivel(this.getNivel());
         Movimiento mov = this.historial.get(this.historial.size()-1);
-        Carta c = tab[mov.getFilas()][mov.getCols()];
+        Carta c = tab.tablero[mov.getFilas()][mov.getCols()];
         switch(c.getTipo()){
             case "|":
                 tab.cambioColumna(mov.getCols());
@@ -312,6 +326,6 @@ public class tableroCartas {
             default:
                 tab.diagIzq(mov);
         }
-        return tab;
+        return tab.getTablero();
     }
 }
