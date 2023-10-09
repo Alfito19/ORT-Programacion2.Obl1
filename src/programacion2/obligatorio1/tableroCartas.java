@@ -10,7 +10,6 @@ import java.util.*;
 public class tableroCartas {
     //argumentos de objeto, no hay instancia de clase 
     private Carta[][] tablero;
-    private Carta[][] tabAnterior;
     private ArrayList<Movimiento> soluciones;
     private ArrayList<Movimiento> historial;
     private Instant tiempoInicial;
@@ -23,15 +22,6 @@ public class tableroCartas {
         this.soluciones = new ArrayList<>();
         this.historial = new ArrayList<>();
         this.movs = 0;
-    }
-
-    public void setTabAnterior(){
-        Carta[][] tab = this.getTablero();
-        this.tabAnterior=tab;
-    }
-
-    public Carta[][] getTableroAnterior(){
-        return this.tabAnterior;
     }
     
     public void setTiempoInicial(){
@@ -154,7 +144,6 @@ public class tableroCartas {
     public void agregarMov(int unaColumna,int unaFila){
         int columna = unaColumna-1;
         int fila = unaFila-1;
-        this.setTabAnterior();
         boolean sePuedeRetroceder = false;
         if(this.getMovs() < this.getNivel()){
             this.soluciones.add(new Movimiento(columna,fila));
@@ -319,33 +308,4 @@ public class tableroCartas {
         } 
         return vuelta;
     }
-
-    /*public Carta[][] tableroAnterior(){
-        tableroCartas tab = new tableroCartas();
-        tab.setTableroSistema(this.getTablero());
-        Movimiento[] mov = {this.historial.get(this.historial.size()-1),null};
-        if(this.getHistorial().size()==1){
-            mov[1] = this.getSoluciones().get(this.getSoluciones().size()-2);
-        }
-        else{
-            mov[1] = (this.historial.get(this.historial.size()-2));
-        }
-        for (int i=0;i<=1;i++){
-            Carta c = this.tablero[mov[i].getFilas()][mov[i].getCols()];
-            switch(c.getTipo()){
-                case "|":
-                    tab.cambioColumna(mov[i].getCols());
-                    break;
-                case "-":
-                    tab.cambioFila(mov[i].getFilas());
-                    break;
-                case "/":
-                    tab.diagDer(mov[i]);
-                    break;
-                default:
-                    tab.diagIzq(mov[i]);
-            }
-        }
-        return tab.getTablero();
-    }*/
 }
