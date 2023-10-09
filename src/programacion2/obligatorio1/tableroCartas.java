@@ -150,37 +150,32 @@ public class tableroCartas {
             aplicarMov();
         }
         else{
-            if(this.soluciones.size() > 1 && !this.getHistorial().isEmpty() && columna == (this.historial.get(this.historial.size()-1).getCols())+1 && fila == (this.historial.get(this.historial.size()-1).getFilas())+1) {
+            if(this.soluciones.size() > 1 && columna == (this.soluciones.get(this.soluciones.size()-1).getCols()) && fila == (this.soluciones.get(soluciones.size()-1).getFilas())) {
                 sePuedeRetroceder = true;
             }
             else if(columna == (-2) && fila == (-2)){
                 sePuedeRetroceder = true;
             }
             if(sePuedeRetroceder){
-                if(columna == (this.soluciones.get(this.soluciones.size()-1).getCols()) && fila == (this.soluciones.get(this.soluciones.size()-1).getFilas())){
-                    columna = this.soluciones.get(this.soluciones.size()-1).getCols();
-                    fila = this.soluciones.get(this.soluciones.size()-1).getFilas();
-                }
-                else{
+                if(!(columna == (this.soluciones.get(this.soluciones.size()-1).getCols()) && fila == (this.soluciones.get(this.soluciones.size()-1).getFilas()))){
                     columna = this.historial.get(this.historial.size()-1).getCols();
                     fila = this.historial.get(this.historial.size()-1).getFilas();
-                }
-                // Si soluciones tiene elementos y el movimiento que intentamos aplicar es igual al ultimo movimiento de soluciones, aplica el movimiento y lo borra de la lista.
-                if(getSoluciones().size() > 1 && columna == (this.soluciones.get(this.soluciones.size()-1).getCols()) && fila == (this.soluciones.get(this.soluciones.size()-1).getFilas())){
-                    this.historial.add(new Movimiento(columna,fila));
-                    aplicarMov();
-                    this.soluciones.remove(this.soluciones.size()-1);
-                }
-                // Si soluciones no tiene elementos o movimiento que intentamos aplicar no es igual al ultimo elemento de soluciones, lo agrega a solucion y aplica el movimiento
-                else if(getSoluciones().isEmpty()||!(columna == (this.soluciones.get(this.soluciones.size() - 1).getCols()) && fila == (soluciones.get(soluciones.size() - 1).getFilas()))){
+                    // Si el movimiento que intentamos aplicar no es igual al ultimo elemento de soluciones, lo agrega a solucion y aplica el movimiento
                     this.soluciones.add(new Movimiento(columna,fila));
                     this.historial.add(new Movimiento(columna,fila));
                     aplicarMov();
                 }
+                // Si soluciones tiene elementos y el movimiento que intentamos aplicar es igual al ultimo movimiento de soluciones, aplica el movimiento y lo borra de la lista.
+                if((getSoluciones().size() > 1) && columna == (this.soluciones.get(this.soluciones.size()-1).getCols()) && fila == (this.soluciones.get(this.soluciones.size()-1).getFilas())){
+                    System.out.println("Entra al if");
+                    this.historial.add(new Movimiento(columna,fila));
+                    aplicarMov();
+                    this.soluciones.remove(this.soluciones.size()-1);
+                }
             }
             else{
                 //Si el movimiento no está repetido con el ultimo de soluciones, se agrega a soluciones, y en caso de ser un movimiento del usuario, se agrega a historial
-                if(getSoluciones().isEmpty()||!(columna == (this.soluciones.get(this.soluciones.size() - 1).getCols()) || !(fila == (soluciones.get(soluciones.size() - 1).getFilas())))){
+                if(getSoluciones().isEmpty()||!(columna == (this.soluciones.get(this.soluciones.size() - 1).getCols()) && !(fila == (soluciones.get(soluciones.size() - 1).getFilas())))){
                     this.soluciones.add(new Movimiento(columna,fila));
                     this.historial.add(new Movimiento(columna,fila));
                     aplicarMov();
