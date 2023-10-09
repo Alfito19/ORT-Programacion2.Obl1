@@ -10,6 +10,7 @@ import java.util.*;
 public class tableroCartas {
     //argumentos de objeto, no hay instancia de clase 
     private Carta[][] tablero;
+    private Carta[][] tabAnterior;
     private ArrayList<Movimiento> soluciones;
     private ArrayList<Movimiento> historial;
     private Instant tiempoInicial;
@@ -22,6 +23,15 @@ public class tableroCartas {
         this.soluciones = new ArrayList<>();
         this.historial = new ArrayList<>();
         this.movs = 0;
+    }
+
+    public void setTabAnterior(){
+        Carta[][] tab = this.getTablero();
+        this.tabAnterior=tab;
+    }
+
+    public Carta[][] getTableroAnterior(){
+        return this.tabAnterior;
     }
     
     public void setTiempoInicial(){
@@ -144,6 +154,7 @@ public class tableroCartas {
     public void agregarMov(int unaColumna,int unaFila){
         int columna = unaColumna-1;
         int fila = unaFila-1;
+        this.setTabAnterior();
         boolean sePuedeRetroceder = false;
         if(this.getMovs() < this.getNivel()){
             this.soluciones.add(new Movimiento(columna,fila));
@@ -180,7 +191,7 @@ public class tableroCartas {
             }
             else{
                 //Si el movimiento no está repetido con el ultimo de soluciones, se agrega a soluciones, y en caso de ser un movimiento del usuario, se agrega a historial
-                if(getSoluciones().isEmpty()||!(columna == (this.soluciones.get(this.soluciones.size() - 1).getCols()) && fila == (soluciones.get(soluciones.size() - 1).getFilas()))){
+                if(getSoluciones().isEmpty()||!(columna == (this.soluciones.get(this.soluciones.size() - 1).getCols()) || !(fila == (soluciones.get(soluciones.size() - 1).getFilas())))){
                     this.soluciones.add(new Movimiento(columna,fila));
                     this.historial.add(new Movimiento(columna,fila));
                     aplicarMov();
@@ -188,12 +199,13 @@ public class tableroCartas {
                 else{
                     this.historial.add(new Movimiento(columna,fila));
                     aplicarMov();
+                    if(!(this.getMovs() >= this.getNivel() && getSoluciones().size() == 1 && columna == this.soluciones.get(0).getCols() && fila == this.soluciones.get(0).getFilas()))
                     this.soluciones.remove(this.soluciones.size()-1);
                 }
             }
         }     
-        
     }
+
     //llama directamente al ultimo elemento de la lista de soluciones para no tener que pasarle por parametro al mismo
     public void aplicarMov(){
         this.aumentarMovs();
@@ -301,17 +313,23 @@ public class tableroCartas {
         long minutos = duracion.toMinutes();
         long segundos = duracion.minusMinutes(minutos).getSeconds();
         // Imprime el resultado en formato Minutos:Segundos
-        vuelta.concat("Tiempo transcurrido: " + minutos + " minutos y " + segundos + " segundos" + "\n");
+        vuelta += ("Tiempo transcurrido: " + minutos + " minutos y " + segundos + " segundos" + "\n");
         if (!respuesta3.equalsIgnoreCase("X") && !respuesta4.equalsIgnoreCase("X")){
-            vuelta.concat("¿Desea volver a jugar? Y para si, N para no");
+            vuelta += ("¿Desea volver a jugar? Y para si, N para no");
         } 
         return vuelta;
     }
 
-    public Carta[][] tableroAnterior(){
+    /*public Carta[][] tableroAnterior(){
         tableroCartas tab = new tableroCartas();
         tab.setTableroSistema(this.getTablero());
-        Movimiento[] mov = {this.historial.get(this.historial.size()-1),this.historial.get(this.historial.size()-2)};
+        Movimiento[] mov = {this.historial.get(this.historial.size()-1),null};
+        if(this.getHistorial().size()==1){
+            mov[1] = this.getSoluciones().get(this.getSoluciones().size()-2);
+        }
+        else{
+            mov[1] = (this.historial.get(this.historial.size()-2));
+        }
         for (int i=0;i<=1;i++){
             Carta c = this.tablero[mov[i].getFilas()][mov[i].getCols()];
             switch(c.getTipo()){
@@ -329,5 +347,5 @@ public class tableroCartas {
             }
         }
         return tab.getTablero();
-    }
+    }*/
 }

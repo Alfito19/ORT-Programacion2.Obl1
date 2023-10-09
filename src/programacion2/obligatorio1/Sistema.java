@@ -7,9 +7,9 @@ import java.util.Scanner;
 public class Sistema {
     public static void main(String[] args){
         Scanner in = new Scanner(System.in);
-        boolean deseaJugar = false;
+        boolean deseaJugar = true;
         System.out.println("¿Desea jugar? Responda utilizando Y para si, N para no");
-        while(!deseaJugar){
+        while(deseaJugar){
             String primerRespuesta = in.nextLine();
             // Al seleccionar Y comienza el juego
             if(primerRespuesta.equalsIgnoreCase("Y")){           
@@ -80,90 +80,90 @@ public class Sistema {
                 }
 
                 // Mostramos el tablero base, imprimimos menu con opciones y empezamos a contar el tiempo
-                imprimirTablero(tablero.getTablero());
+                imprimirTablero(tablero);
                 tablero.setTiempoInicial();
                 System.out.println("\n\nRecuerde que siempre podrá utilizar los sigueintes comandos \n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion");
                 System.out.println("En caso contrario, realice un movimiento ingresando por separado la fila y columna correspondientes al movimiento deseado.\n");
-                // Solicita "tercerRespuesta (fila)" y "cuartaRespuesta (col)" para luego en el try-catch, transformarlo a numero, en caso de que no pueda lo tomará como excepción y verificará si es una de las opciones [X, H, S]. En caso de que se pueda transformar a numero, lo procesará como movimiento chequeando que sea un movimiento válido.
-                String tercerRespuesta = in.nextLine();
-                if(tercerRespuesta.toUpperCase().equals("H")){
-                    mostrarHistorial(tablero);
-                    System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila y columna correspondiente al movimiento\n");
-                    tercerRespuesta = in.nextLine();
-                }else if(tercerRespuesta.toUpperCase().equals("S")){
-                    mostrarSoluciones(tablero);
-                    System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila y columna correspondiente al movimiento\n");
-                    tercerRespuesta = in.nextLine();
-                }
-                else if(tercerRespuesta.toUpperCase().equals("X")){
-                    System.out.println(tablero.finDelJuego(tercerRespuesta, "X"));
-                    System.exit(0);
-                }
-                System.out.println("Ingrese columna\n");
-                String cuartaRespuesta = in.nextLine();
+                // Declara "tercerRespuesta (fila)" y "cuartaRespuesta (col)" para luego en el try-catch, transformarlo a numero, en caso de que no pueda lo tomar� como excepci�n y verificar� si es una de las opciones [X, H, S]. En caso de que se pueda transformar a numero, lo procesar� como movimiento chequeando que sea un movimiento v�lido.
+                String tercerRespuesta = "";
+                String cuartaRespuesta= "";
+                
                 boolean ListoParaJugar = true;
+                boolean interactuado = false;
                 while(ListoParaJugar){
+                    tercerRespuesta = in.nextLine();
+                    if(tercerRespuesta.equalsIgnoreCase("H")){
+                        interactuado = true;
+                        mostrarHistorial(tablero);
+                        System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila y columna correspondiente al movimiento\n");
+                    }else if(tercerRespuesta.equalsIgnoreCase("S")){
+                        interactuado = true;
+                        mostrarSoluciones(tablero);
+                        System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila y columna correspondiente al movimiento\n");
+                    }
+                    else if(tercerRespuesta.equalsIgnoreCase("X")){
+                        interactuado = true;
+                        System.out.println(tablero.finDelJuego(tercerRespuesta, "X"));
+                        System.exit(0);
+                    }
+                    else{
+                        System.out.println("Ingrese columna\n");
+                        cuartaRespuesta = in.nextLine(); 
+                        if(cuartaRespuesta.equalsIgnoreCase("H")){
+                        interactuado = true;
+                        mostrarHistorial(tablero);
+                        System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila y columna correspondiente al movimiento\n");
+                        }else if(cuartaRespuesta.equalsIgnoreCase("S")){
+                            interactuado = true;
+                            mostrarSoluciones(tablero);
+                            System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila y columna correspondiente al movimiento\n");
+                        }
+                        else if(cuartaRespuesta.equalsIgnoreCase("X")){
+                            interactuado = true;
+                            System.out.println(tablero.finDelJuego(tercerRespuesta, "X"));
+                            System.exit(0);
+                        }  
+                    }
                     // Aca confirmamos tercerRespuesta es numero, en caso de que si, ejecuta las siguientes comprobaciones
                     try{
                         int fila = Integer.parseInt(tercerRespuesta);
                         int col = Integer.parseInt(cuartaRespuesta);
                         if(tablero.movimientoValido(col,fila)){
                             tablero.agregarMov(col,fila);
-                            imprimir2Tableros(tablero); // Imprimir tablero con movimiento (dos tableros)
+                            if(col == (-1) && fila == (-1)){
+                                imprimirTablero(tablero);
+                            }
+                            else{
+                                imprimir2Tableros(tablero); // Imprimir tablero con movimiento (dos tableros)
+                            }
                             System.out.println();
                             if(tablero.checkWin()){
                                 System.out.println("¡GANASTE!");
-                                deseaJugar = false;
                                 tableroSeleccionado = false;
                                 ListoParaJugar = false;
                             }
                             else{
                                 System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila y columna correspondiente al movimiento\n");
-                                tercerRespuesta = in.nextLine();
-                                System.out.println("Ingrese columna\n");
-                                cuartaRespuesta = in.nextLine();
                             }
                         }
                         else{
                             System.out.println("Entrada no válida, recuerda que las opciones son: \n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila y columna correspondiente al movimiento\n");
-                            tercerRespuesta = in.nextLine();
-                            System.out.println("Ingrese columna\n");
-                            cuartaRespuesta = in.nextLine();
                         }
                     }
-                    // En caso de que tercerRespuesta no sea numero, confirmamos que sea H para mostrar historial o S para mostrar una solucion, en caso de ser X no entraría al while y en cualquier otro caso mostramos error y opciones nuevamente
+                    // En caso de que tercerRespuesta o cuartaRespuesta no sea numero, confirmamos que sea H para mostrar historial o S para mostrar una solucion, en caso de ser X no entraría al while y en cualquier otro caso mostramos error y opciones nuevamente
                     catch(NumberFormatException e){
-                        if(tercerRespuesta.toUpperCase().equals("H") || (cuartaRespuesta.toUpperCase().equals("H"))){
-                            mostrarHistorial(tablero);
-                            System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila y columna correspondiente al movimiento\n");
-                            tercerRespuesta = in.nextLine();
-                            System.out.println("Ingrese columna\n");
-                            cuartaRespuesta = in.nextLine();
-                        }else if(tercerRespuesta.toUpperCase().equals("S") || (cuartaRespuesta.toUpperCase().equals("S"))){
-                            mostrarSoluciones(tablero);
-                            System.out.println("Ingrese una de las siguientes opciones\n- (-1) para retroceder un movimiento\n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila y columna correspondiente al movimiento\n");
-                            tercerRespuesta = in.nextLine();
-                            System.out.println("Ingrese columna\n");
-                            cuartaRespuesta = in.nextLine();
-                        }
-                        else if(tercerRespuesta.toUpperCase().equals("X") || (cuartaRespuesta.toUpperCase().equals("X"))){
-                                System.out.println(tablero.finDelJuego(tercerRespuesta, cuartaRespuesta));
-                                System.exit(0);
-                        }else{
+                        if(!interactuado){
                             System.out.println("Entrada no válida, recuerda que las opciones son: \n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion \n- Fila y columna correspondiente al movimiento\n");
-                            tercerRespuesta = in.nextLine();
-                            System.out.println("Ingrese columna\n");
-                            cuartaRespuesta = in.nextLine();
+                        }
+                        else{
+                            interactuado = false;
                         }
                     }
                 }
-            System.out.println(tablero.finDelJuego(tercerRespuesta, cuartaRespuesta));
-            if(tercerRespuesta.equals("X") || cuartaRespuesta.equals("X")){
-                System.exit(0);
-            }
-            else{
-                deseaJugar = false;
-            }
+                System.out.println(tablero.finDelJuego(tercerRespuesta, cuartaRespuesta));
+                if(tercerRespuesta.equals("X") || cuartaRespuesta.equals("X")){
+                    System.exit(0);
+                }
             }else if(primerRespuesta.equalsIgnoreCase("N")){
                 System.exit(0);
             }
@@ -189,7 +189,8 @@ public class Sistema {
     }
     
     // Imprimir 1 tablero
-    public static void imprimirTablero(Carta[][] tablero){
+    public static void imprimirTablero(tableroCartas unTablero){
+        Carta[][] tablero = unTablero.getTablero();
         System.out.print(Carta.NC+" ");
         for (int j = 0; j < tablero[0].length; j++) {
             System.out.print("   "+(j+1));
@@ -219,7 +220,6 @@ public class Sistema {
     
     // Imprimir 2 tableros.
     public static void imprimir2Tableros(tableroCartas unTablero){
-        Carta[][] tablero2 = unTablero.tableroAnterior();
         Carta[][] tablero = unTablero.getTablero();
         System.out.print(Carta.NC+" ");
         for (int j = 0; j < tablero[0].length; j++) {
@@ -244,12 +244,14 @@ public class Sistema {
             System.out.println();
             
             // Imprimir los elementos de la fila
+            unTablero.aplicarMov();
             System.out.print(i + 1 + " |");
             for (int j = 0; j < tablero[i].length; j++) {
                 System.out.printf(" %s |", tablero[i][j]+Carta.NC);
             }
+            unTablero.aplicarMov();
             System.out.print("   ==>   "+(i+1)+" |");
-            for (int j = 0; j < tablero2[i].length; j++) {
+            for (int j = 0; j < tablero[i].length; j++) {
                 System.out.printf(" %s |", tablero[i][j]+Carta.NC);
             }
             
