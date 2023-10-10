@@ -3,6 +3,9 @@ package programacion2.obligatorio1;
 //Joaquin Hernandez (257620)
 //Alfonso Saizar (305968)
 
+//Joaquin Hernandez (257620)
+//Alfonso Saizar (305968)
+
 import java.util.Scanner;
 public class Sistema {
     public static void main(String[] args){

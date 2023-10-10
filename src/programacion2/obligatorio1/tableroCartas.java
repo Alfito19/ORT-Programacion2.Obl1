@@ -10,6 +10,7 @@ import java.util.*;
 public class tableroCartas {
     //argumentos de objeto, no hay instancia de clase 
     private Carta[][] tablero;
+    private Carta[][] tabAnt;
     private ArrayList<Movimiento> soluciones;
     private ArrayList<Movimiento> historial;
     private Instant tiempoInicial;
@@ -22,6 +23,20 @@ public class tableroCartas {
         this.soluciones = new ArrayList<>();
         this.historial = new ArrayList<>();
         this.movs = 0;
+    }
+    
+    public void clonarTablero(){
+        Carta[][] tab = (Carta[][]) this.getTablero().clone();
+        for(int i = 0; i < this.getTablero().length;i++){
+            for(int j = 0;j< this.getTablero()[i].length;j++){
+                tab[i][j] = this.getTablero()[i][j];
+            }
+        }
+        this.tabAnt = tab;
+    }
+    
+    public Carta[][] getTableroAnterior(){
+        return this.tabAnt;
     }
     
     public void setTiempoInicial(){
@@ -193,6 +208,7 @@ public class tableroCartas {
     //llama directamente al ultimo elemento de la lista de soluciones para no tener que pasarle por parametro al mismo
     public void aplicarMov(){
         this.aumentarMovs();
+        this.clonarTablero();
         Movimiento mov = this.soluciones.get(this.soluciones.size()-1);
         Carta c = this.tablero[mov.getFilas()][mov.getCols()];
         switch(c.getTipo()){
