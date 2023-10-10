@@ -3,9 +3,6 @@ package programacion2.obligatorio1;
 //Joaquin Hernandez (257620)
 //Alfonso Saizar (305968)
 
-//Joaquin Hernandez (257620)
-//Alfonso Saizar (305968)
-
 import java.util.Scanner;
 public class Sistema {
     public static void main(String[] args){
@@ -247,12 +244,10 @@ public class Sistema {
             System.out.println();
             
             // Imprimir los elementos de la fila
-            unTablero.aplicarMov();
             System.out.print(i + 1 + " |");
             for (int j = 0; j < tablero[i].length; j++) {
-                System.out.printf(" %s |", tablero[i][j]+Carta.NC);
+                System.out.printf(" %s |", unTablero.getTableroAnterior()[i][j]+Carta.NC);
             }
-            unTablero.aplicarMov();
             System.out.print("   ==>   "+(i+1)+" |");
             for (int j = 0; j < tablero[i].length; j++) {
                 System.out.printf(" %s |", tablero[i][j]+Carta.NC);

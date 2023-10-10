@@ -19,7 +19,7 @@ public class tableroCartas {
 
     public tableroCartas(){
         this.tablero = new Carta[5][6];
-        setNivel(3);
+        this.setNivel(3);
         this.soluciones = new ArrayList<>();
         this.historial = new ArrayList<>();
         this.movs = 0;
@@ -29,7 +29,7 @@ public class tableroCartas {
         Carta[][] tab = (Carta[][]) this.getTablero().clone();
         for(int i = 0; i < this.getTablero().length;i++){
             for(int j = 0;j< this.getTablero()[i].length;j++){
-                tab[i][j] = this.getTablero()[i][j];
+                tab[i][j] = ((Carta)this.getTablero()[i][j].clone());
             }
         }
         this.tabAnt = tab;
@@ -159,6 +159,9 @@ public class tableroCartas {
     public void agregarMov(int unaColumna,int unaFila){
         int columna = unaColumna-1;
         int fila = unaFila-1;
+        if (this.getMovs()>=this.getNivel()){
+            this.clonarTablero();
+        }
         boolean sePuedeRetroceder = false;
         if(this.getMovs() < this.getNivel()){
             this.soluciones.add(new Movimiento(columna,fila));
@@ -208,7 +211,6 @@ public class tableroCartas {
     //llama directamente al ultimo elemento de la lista de soluciones para no tener que pasarle por parametro al mismo
     public void aplicarMov(){
         this.aumentarMovs();
-        this.clonarTablero();
         Movimiento mov = this.soluciones.get(this.soluciones.size()-1);
         Carta c = this.tablero[mov.getFilas()][mov.getCols()];
         switch(c.getTipo()){

@@ -3,7 +3,9 @@ package programacion2.obligatorio1;
 //Joaquin Hernandez (257620)
 //Alfonso Saizar (305968)
 
-public class Carta {
+import java.util.*;
+
+public class Carta implements Cloneable{
     private String color;
     private String tipo;
     //Azul
@@ -52,5 +54,15 @@ public class Carta {
 
     public boolean compara(Carta unaCarta){
         return this.getColor().equals(unaCarta.getColor());
+    }
+    public Object clone() {
+        Object o = null;
+        try {
+            o = super.clone();
+
+        } catch (CloneNotSupportedException e) {
+            System.out.println("No se puede clonar");
+        }
+        return o;
     }
 }
