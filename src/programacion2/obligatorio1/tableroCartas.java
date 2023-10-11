@@ -26,7 +26,7 @@ public class tableroCartas {
     }
     
     public void clonarTablero(){
-        Carta[][] tab = (Carta[][]) this.getTablero().clone();
+        Carta[][] tab = new Carta[this.getTablero().length][this.getTablero()[0].length];
         for(int i = 0; i < this.getTablero().length;i++){
             for(int j = 0;j< this.getTablero()[i].length;j++){
                 tab[i][j] = ((Carta)this.getTablero()[i][j].clone());
@@ -159,9 +159,6 @@ public class tableroCartas {
     public void agregarMov(int unaColumna,int unaFila){
         int columna = unaColumna-1;
         int fila = unaFila-1;
-        if (this.getMovs()>=this.getNivel()){
-            this.clonarTablero();
-        }
         boolean sePuedeRetroceder = false;
         if(this.getMovs() < this.getNivel()){
             this.soluciones.add(new Movimiento(columna,fila));
@@ -231,6 +228,7 @@ public class tableroCartas {
     public boolean movimientoValido(int unaCol,int unaFila){
         boolean c1 = (this.getTablero().length >= unaFila  && unaFila >= -1 && unaFila != 0);
         boolean c2 = (this.getTablero()[0].length >= unaCol && unaCol >= -1 && unaCol != 0);
+        this.clonarTablero();
         if (unaCol == (-1) && unaFila == (-1) && this.historial.isEmpty()){
             return false;
         }
@@ -320,5 +318,17 @@ public class tableroCartas {
             vuelta += ("¿Desea volver a jugar? Y para si, N para no");
         } 
         return vuelta;
+    }
+    
+    @Override
+    public Object clone() {
+        Object o = null;
+        try {
+            o = super.clone();
+
+        } catch (CloneNotSupportedException e) {
+            System.out.println("No se puede clonar");
+        }
+        return o;
     }
 }

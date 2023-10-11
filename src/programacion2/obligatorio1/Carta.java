@@ -55,6 +55,7 @@ public class Carta implements Cloneable{
     public boolean compara(Carta unaCarta){
         return this.getColor().equals(unaCarta.getColor());
     }
+    @Override
     public Object clone() {
         Object o = null;
         try {

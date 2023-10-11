@@ -221,6 +221,7 @@ public class Sistema {
     // Imprimir 2 tableros.
     public static void imprimir2Tableros(tableroCartas unTablero){
         Carta[][] tablero = unTablero.getTablero();
+        Carta[][] anterior = unTablero.getTableroAnterior();
         System.out.print(Carta.NC+" ");
         for (int j = 0; j < tablero[0].length; j++) {
             System.out.print("   "+(j+1));
@@ -246,7 +247,7 @@ public class Sistema {
             // Imprimir los elementos de la fila
             System.out.print(i + 1 + " |");
             for (int j = 0; j < tablero[i].length; j++) {
-                System.out.printf(" %s |", unTablero.getTableroAnterior()[i][j]+Carta.NC);
+                System.out.printf(" %s |", anterior[i][j]+Carta.NC);
             }
             System.out.print("   ==>   "+(i+1)+" |");
             for (int j = 0; j < tablero[i].length; j++) {
