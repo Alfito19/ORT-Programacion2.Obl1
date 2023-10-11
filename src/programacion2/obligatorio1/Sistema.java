@@ -84,7 +84,7 @@ public class Sistema {
                 tablero.setTiempoInicial();
                 System.out.println("\n\nRecuerde que siempre podrá utilizar los sigueintes comandos \n- X para cerrar el juego \n- H para ver el historial de movimientos \n- S para ver una solucion");
                 System.out.println("En caso contrario, realice un movimiento ingresando por separado la fila y columna correspondientes al movimiento deseado.\n");
-                // Declara "tercerRespuesta (fila)" y "cuartaRespuesta (col)" para luego en el try-catch, transformarlo a numero, en caso de que no pueda lo tomar� como excepci�n y verificar� si es una de las opciones [X, H, S]. En caso de que se pueda transformar a numero, lo procesar� como movimiento chequeando que sea un movimiento v�lido.
+                // Declara "tercerRespuesta (fila)" y "cuartaRespuesta (col)" para luego en el try-catch, transformarlo a numero, en caso de que no pueda lo tomará como excepción y verificará si es una de las opciones [X, H, S]. En caso de que se pueda transformar a numero, lo procesará como movimiento chequeando que sea un movimiento válido.
                 String tercerRespuesta = "";
                 String cuartaRespuesta= "";
                 
