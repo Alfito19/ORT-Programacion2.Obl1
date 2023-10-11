@@ -105,7 +105,7 @@ public class tableroCartas {
             this.tablero=unTableroArchivo;
         }
         catch(FileNotFoundException e){
-            System.out.println("El archivo no existe, se generarÃ¡ el tablero predeterminado.");
+            System.out.println("El archivo no existe, se generará el tablero predeterminado.");
             setTableroPredeterminado();
         }
     }
@@ -182,20 +182,20 @@ public class tableroCartas {
                 }
                 // Si soluciones tiene elementos y el movimiento que intentamos aplicar es igual al ultimo movimiento de soluciones, aplica el movimiento y lo borra de la lista.
                 if((getSoluciones().size() > 1) && columna == (this.soluciones.get(this.soluciones.size()-1).getCols()) && fila == (this.soluciones.get(this.soluciones.size()-1).getFilas())){
-                    System.out.println("Entra al if");
                     this.historial.add(new Movimiento(columna,fila));
                     aplicarMov();
                     this.soluciones.remove(this.soluciones.size()-1);
                 }
             }
             else{
-                //Si el movimiento no estÃ¡ repetido con el ultimo de soluciones, se agrega a soluciones, y en caso de ser un movimiento del usuario, se agrega a historial
+                //Si el movimiento no está repetido con el ultimo de soluciones, se agrega a soluciones, y en caso de ser un movimiento del usuario, se agrega a historial
                 if(getSoluciones().isEmpty()||!(columna == (this.soluciones.get(this.soluciones.size() - 1).getCols()) && !(fila == (soluciones.get(soluciones.size() - 1).getFilas())))){
                     this.soluciones.add(new Movimiento(columna,fila));
                     this.historial.add(new Movimiento(columna,fila));
                     aplicarMov();
                 }
                 else{
+                    this.soluciones.add(new Movimiento(columna,fila));
                     this.historial.add(new Movimiento(columna,fila));
                     aplicarMov();
                     if(!(this.getMovs() >= this.getNivel() && getSoluciones().size() == 1 && columna == this.soluciones.get(0).getCols() && fila == this.soluciones.get(0).getFilas()))
@@ -309,13 +309,13 @@ public class tableroCartas {
     public String finDelJuego(String respuesta3, String respuesta4){
         String vuelta="Fin del juego " + "\n";
         Duration duracion = Duration.between(this.getTiempoInicial(), Instant.now());
-        // Obtiene los minutos y segundos de la duraciÃ³n
+        // Obtiene los minutos y segundos de la duración
         long minutos = duracion.toMinutes();
         long segundos = duracion.minusMinutes(minutos).getSeconds();
         // Imprime el resultado en formato Minutos:Segundos
         vuelta += ("Tiempo transcurrido: " + minutos + " minutos y " + segundos + " segundos" + "\n");
         if (!respuesta3.equalsIgnoreCase("X") && !respuesta4.equalsIgnoreCase("X")){
-            vuelta += ("Â¿Desea volver a jugar? Y para si, N para no");
+            vuelta += ("¿Desea volver a jugar? Y para si, N para no");
         } 
         return vuelta;
     }
