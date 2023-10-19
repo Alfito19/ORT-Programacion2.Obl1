@@ -1,5 +1,4 @@
 package programacion2.obligatorio1;
-
 //Joaquin Hernandez (257620)
 //Alfonso Saizar (305968)
 
@@ -105,7 +104,7 @@ public class tableroCartas {
             this.tablero=unTableroArchivo;
         }
         catch(FileNotFoundException e){
-            System.out.println("El archivo no existe, se generarÃ¡ el tablero predeterminado.");
+            System.out.println("El archivo no existe, se generará el tablero predeterminado.");
             setTableroPredeterminado();
         }
     }
@@ -306,7 +305,7 @@ public class tableroCartas {
         this.setTableroSistema(cambioTablero);
     }
     
-    public String finDelJuego(String respuesta3, String respuesta4){
+    public String finDelJuego(){
         String vuelta="Fin del juego " + "\n";
         Duration duracion = Duration.between(this.getTiempoInicial(), Instant.now());
         // Obtiene los minutos y segundos de la duraciÃ³n
@@ -314,9 +313,7 @@ public class tableroCartas {
         long segundos = duracion.minusMinutes(minutos).getSeconds();
         // Imprime el resultado en formato Minutos:Segundos
         vuelta += ("Tiempo transcurrido: " + minutos + " minutos y " + segundos + " segundos" + "\n");
-        if (!respuesta3.equalsIgnoreCase("X") && !respuesta4.equalsIgnoreCase("X")){
-            vuelta += ("Â¿Desea volver a jugar? Y para si, N para no");
-        } 
+        vuelta += ("¿Desea volver a jugar? Y para si, N para no");
         return vuelta;
     }
     
